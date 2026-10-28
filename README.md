@@ -1,5 +1,5 @@
 # Akatsuki's Draft: AI-Enabled Content Sharing Platform (Backend)
-### Nodevember 4.0 Hackathon
+
 
 Akatsuki's Draft is a high-performance content creation and publishing REST API platform. Users can register securely, manage private drafts, submit content for editorial moderation, and improve their writing using **Google Gemini AI** while strictly preserving the original draft as a distinct version.
 
@@ -251,9 +251,3 @@ Test Results:
 Import `postman_collection.json` into Postman to instantly test all endpoints with pre-configured requests, bodies, and variables.
 
 ---
-
-## 📚 References
-
-- **FreeCodeCamp Curriculum**: [Backend Development and APIs](https://www.freecodecamp.org/learn/back-end-development-and-apis-v9/)
-- **Google Gemini API**: [Document & Multimodal Processing](https://ai.google.dev/gemini-api/docs/document-processing?authuser=1#javascript)
-- **Nodevember 4.0 Hackathon**: Akatsuki Coding Club
