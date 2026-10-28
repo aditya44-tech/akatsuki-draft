@@ -1,0 +1,178 @@
+{
+  "info": {
+    "name": "Akatsuki's Draft - Nodevember 4.0 Backend API",
+    "description": "Postman Collection for Akatsuki's Draft AI-Enabled Content Sharing Platform Backend",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:5000" },
+    { "key": "userToken", "value": "" },
+    { "key": "adminToken", "value": "" },
+    { "key": "samplePostId", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "1. Authentication",
+      "item": [
+        {
+          "name": "POST /auth/register (User)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Itachi Uchiha\",\n  \"email\": \"itachi@akatsuki.dev\",\n  \"password\": \"Mangekyo123\",\n  \"role\": \"user\"\n}"
+            },
+            "url": "{{baseUrl}}/auth/register"
+          }
+        },
+        {
+          "name": "POST /auth/register (Admin)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Pain (Nagato)\",\n  \"email\": \"admin@akatsuki.dev\",\n  \"password\": \"Admin@123\",\n  \"role\": \"admin\"\n}"
+            },
+            "url": "{{baseUrl}}/auth/register"
+          }
+        },
+        {
+          "name": "POST /auth/login",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@akatsuki.dev\",\n  \"password\": \"Admin@123\"\n}"
+            },
+            "url": "{{baseUrl}}/auth/login"
+          }
+        },
+        {
+          "name": "GET /auth/me",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{userToken}}" }],
+            "url": "{{baseUrl}}/auth/me"
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. User — Post Management",
+      "item": [
+        {
+          "name": "POST /posts (Create Draft or Pending)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{userToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Architectural Blueprint for Scalable Microservices\",\n  \"description\": \"Core tenets of decoupled backends in Nodevember\",\n  \"content\": \"Building microservices requires robust state separation, idempotent endpoints, and resilient event routing.\",\n  \"category\": \"Technology\",\n  \"status\": \"draft\"\n}"
+            },
+            "url": "{{baseUrl}}/posts"
+          }
+        },
+        {
+          "name": "GET /posts (View All Approved)",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/posts"
+          }
+        },
+        {
+          "name": "GET /posts/:id (View Approved Post)",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/posts/{{samplePostId}}"
+          }
+        },
+        {
+          "name": "GET /posts/my-posts (View Own Posts & Drafts)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{userToken}}" }],
+            "url": "{{baseUrl}}/posts/my-posts"
+          }
+        },
+        {
+          "name": "PATCH /posts/:id (Update Own Post)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{userToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Architectural Blueprint for Scalable Microservices [Refined]\",\n  \"status\": \"pending\"\n}"
+            },
+            "url": "{{baseUrl}}/posts/{{samplePostId}}"
+          }
+        },
+        {
+          "name": "DELETE /posts/:id (Delete Own Post)",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{userToken}}" }],
+            "url": "{{baseUrl}}/posts/{{samplePostId}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. Admin — Post Approval",
+      "item": [
+        {
+          "name": "GET /admin/posts/pending",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }],
+            "url": "{{baseUrl}}/admin/posts/pending"
+          }
+        },
+        {
+          "name": "PATCH /admin/posts/approve/:id",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }],
+            "url": "{{baseUrl}}/admin/posts/approve/{{samplePostId}}"
+          }
+        },
+        {
+          "name": "PATCH /admin/posts/reject/:id",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }],
+            "url": "{{baseUrl}}/admin/posts/reject/{{samplePostId}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. AI Integration — Content Improvement",
+      "item": [
+        {
+          "name": "POST /ai/improve/:postId",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{userToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"instruction\": \"Elevate readability, organize with markdown subheaders, and optimize vocabulary.\"\n}"
+            },
+            "url": "{{baseUrl}}/ai/improve/{{samplePostId}}"
+          }
+        }
+      ]
+    }
+  ]
+}
